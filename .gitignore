@@ -13,3 +13,4 @@
 /node_modules
 .rspec_status
 /screenshots
+*.gem
