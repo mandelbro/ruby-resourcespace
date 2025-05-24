@@ -5,19 +5,19 @@ require_relative "lib/resourcespace/version"
 Gem::Specification.new do |spec|
   spec.name          = "resourcespace-ruby"
   spec.version       = ResourceSpace::VERSION
-  spec.authors       = ["Survey Flunkie Team"]
-  spec.email         = ["info@surveyflunkie.com"]
+  spec.authors       = ["@mandelbro"]
+  spec.email         = ["chris@montesmakes.co"]
 
   spec.summary       = "Ruby client for ResourceSpace Digital Asset Management API"
   spec.description   = "A comprehensive Ruby client library for interacting with ResourceSpace open-source Digital Asset Management system. Supports resource management, file uploads, searching, collections, and metadata operations."
-  spec.homepage      = "https://github.com/survey-flunkie/resourcespace-ruby"
+  spec.homepage      = "https://github.com/mandelbro/resourcespace-ruby"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/survey-flunkie/resourcespace-ruby"
-  spec.metadata["changelog_uri"] = "https://github.com/survey-flunkie/resourcespace-ruby/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/mandelbro/resourcespace-ruby"
+  spec.metadata["changelog_uri"] = "https://github.com/mandelbro/resourcespace-ruby/blob/main/CHANGELOG.md"
   spec.metadata["documentation_uri"] = "https://rubydoc.info/gems/resourcespace-ruby"
 
   # Specify which files should be added to the gem when it is released.

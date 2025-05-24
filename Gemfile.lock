@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resourcespace-ruby (0.1.0)
+    resourcespace-ruby (0.1.2)
       faraday (~> 2.7)
       faraday-multipart (~> 1.0)
       json (~> 2.6)
