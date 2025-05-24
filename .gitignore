@@ -1,0 +1,15 @@
+.DS_Store
+# SpecStory project identity file
+.specstory/.project.json
+# SpecStory explanation file
+.specstory/.what-is-this.md
+
+# Environment files
+.env
+.env.*
+!.env.example
+/tmp
+/coverage
+/node_modules
+.rspec_status
+/screenshots
