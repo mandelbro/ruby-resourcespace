@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative "lib/resourcespace/version"
+
 Gem::Specification.new do |spec|
   spec.name          = "resourcespace-ruby"
-  spec.version       = "0.1.0"
+  spec.version       = ResourceSpace::VERSION
   spec.authors       = ["Survey Flunkie Team"]
   spec.email         = ["info@surveyflunkie.com"]
 

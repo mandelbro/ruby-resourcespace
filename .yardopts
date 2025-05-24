@@ -1,0 +1,7 @@
+--markup markdown
+--protected
+--private
+--readme README.md
+--files CHANGELOG.md,LICENSE.txt
+lib/**/*.rb
+- README.md CHANGELOG.md LICENSE.txt
