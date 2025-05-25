@@ -3,7 +3,7 @@
 A comprehensive Ruby client library for the [ResourceSpace](https://www.resourcespace.com/) open-source Digital Asset Management system. This gem provides an easy-to-use interface for managing web assets including images, CSS files, JavaScript files, fonts, and other digital resources.
 
 [![Gem Version](https://badge.fury.io/rb/resourcespace-ruby.svg)](https://badge.fury.io/rb/resourcespace-ruby)
-[![Documentation](https://img.shields.io/badge/docs-rubydoc.info-blue)](https://rubydoc.info/gems/resourcespace-ruby)
+[![Documentation](https://img.shields.io/badge/docs-rubydoc.info-blue)](https://rubydoc.info/gems/resourcespace-ruby/0.1.2)
 
 ## Features
 
