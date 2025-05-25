@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative "resourcespace/version"
-require_relative "resourcespace/client"
-require_relative "resourcespace/configuration"
-require_relative "resourcespace/errors"
-require_relative "resourcespace/resource"
-require_relative "resourcespace/collection"
-require_relative "resourcespace/search"
-require_relative "resourcespace/user"
-require_relative "resourcespace/metadata"
+require_relative 'resourcespace/version'
+require_relative 'resourcespace/client'
+require_relative 'resourcespace/configuration'
+require_relative 'resourcespace/errors'
+require_relative 'resourcespace/resource'
+require_relative 'resourcespace/collection'
+require_relative 'resourcespace/search'
+require_relative 'resourcespace/user'
+require_relative 'resourcespace/metadata'
 
 # ResourceSpace Ruby client for interacting with ResourceSpace Digital Asset Management API
 #

@@ -32,9 +32,9 @@ module ResourceSpace
     # @return [Array] field options
     def get_field_options(field_id, node_info: false)
       params = { param1: field_id.to_s }
-      params[:param2] = node_info ? "true" : "false"
+      params[:param2] = node_info ? 'true' : 'false'
 
-      client.get("get_field_options", params)
+      client.get('get_field_options', params)
     end
 
     # Get node ID for a field value
@@ -43,10 +43,10 @@ module ResourceSpace
     # @param value [String] field value
     # @return [Integer] node ID
     def get_node_id(field_id, value)
-      response = client.get("get_node_id", {
-        param1: field_id.to_s,
-        param2: value
-      })
+      response = client.get('get_node_id', {
+                              param1: field_id.to_s,
+                              param2: value
+                            })
       response.to_i
     end
 
@@ -55,7 +55,7 @@ module ResourceSpace
     # @param field_id [Integer] field ID
     # @return [Array] field nodes
     def get_nodes(field_id)
-      client.get("get_nodes", { param1: field_id.to_s })
+      client.get('get_nodes', { param1: field_id.to_s })
     end
 
     # Set/create a node value
@@ -69,9 +69,9 @@ module ResourceSpace
         param1: field_id.to_s,
         param2: value
       }
-      params[:param3] = return_existing ? "true" : "false"
+      params[:param3] = return_existing ? 'true' : 'false'
 
-      response = client.post("set_node", params)
+      response = client.post('set_node', params)
       response.to_i
     end
 
@@ -82,13 +82,13 @@ module ResourceSpace
     # @param node_ids [Array<Integer>] array of node IDs
     # @return [Hash] response
     def add_resource_nodes(resource_id, field_id, node_ids)
-      node_ids_str = Array(node_ids).join(",")
+      node_ids_str = Array(node_ids).join(',')
 
-      client.post("add_resource_nodes", {
-        param1: resource_id.to_s,
-        param2: field_id.to_s,
-        param3: node_ids_str
-      })
+      client.post('add_resource_nodes', {
+                    param1: resource_id.to_s,
+                    param2: field_id.to_s,
+                    param3: node_ids_str
+                  })
     end
 
     # Add resource nodes for multiple fields
@@ -102,11 +102,11 @@ module ResourceSpace
       params = { param1: resource_id.to_s }
 
       field_data.each_with_index do |(field_id, node_ids), index|
-        node_ids_str = Array(node_ids).join(",")
+        node_ids_str = Array(node_ids).join(',')
         params["param#{index + 2}"] = "#{field_id}:#{node_ids_str}"
       end
 
-      client.post("add_resource_nodes_multi", params)
+      client.post('add_resource_nodes_multi', params)
     end
 
     # Update a field definition
@@ -122,7 +122,7 @@ module ResourceSpace
         params["param#{index + 2}"] = "#{key}:#{value}"
       end
 
-      client.post("update_field", params)
+      client.post('update_field', params)
     end
 
     # Get resource type fields
@@ -133,7 +133,7 @@ module ResourceSpace
       params = {}
       params[:param1] = resource_type.to_s if resource_type
 
-      client.get("get_resource_type_fields", params)
+      client.get('get_resource_type_fields', params)
     end
 
     # Create a new resource type field
@@ -147,7 +147,7 @@ module ResourceSpace
       params = {
         param1: name,
         param2: type,
-        param3: Array(resource_types).join(",")
+        param3: Array(resource_types).join(',')
       }
 
       # Add additional options
@@ -155,7 +155,7 @@ module ResourceSpace
         params["param#{index + 4}"] = "#{key}:#{value}"
       end
 
-      client.post("create_resource_type_field", params)
+      client.post('create_resource_type_field', params)
     end
 
     # Toggle active state for nodes
@@ -165,13 +165,13 @@ module ResourceSpace
     # @param active [Boolean] whether to activate or deactivate
     # @return [Hash] response
     def toggle_active_state_for_nodes(field_id, node_ids, active: true)
-      node_ids_str = Array(node_ids).join(",")
+      node_ids_str = Array(node_ids).join(',')
 
-      client.post("toggle_active_state_for_nodes", {
-        param1: field_id.to_s,
-        param2: node_ids_str,
-        param3: active ? "1" : "0"
-      })
+      client.post('toggle_active_state_for_nodes', {
+                    param1: field_id.to_s,
+                    param2: node_ids_str,
+                    param3: active ? '1' : '0'
+                  })
     end
 
     # Get metadata schema for web assets
@@ -179,15 +179,15 @@ module ResourceSpace
     # @return [Hash] recommended metadata fields for web assets
     def web_asset_schema
       {
-        8 => "Title/Name",
-        12 => "Keywords/Tags",
-        51 => "Asset Type", # Custom field for web asset type
-        52 => "Usage Rights", # Custom field for usage/license
-        53 => "Dimensions", # Custom field for dimensions
-        54 => "File Size", # Custom field for file size
-        55 => "Compression", # Custom field for compression type
-        56 => "Color Profile", # Custom field for color profile
-        57 => "Purpose/Context" # Custom field for intended use
+        8 => 'Title/Name',
+        12 => 'Keywords/Tags',
+        51 => 'Asset Type', # Custom field for web asset type
+        52 => 'Usage Rights', # Custom field for usage/license
+        53 => 'Dimensions', # Custom field for dimensions
+        54 => 'File Size', # Custom field for file size
+        55 => 'Compression', # Custom field for compression type
+        56 => 'Color Profile', # Custom field for color profile
+        57 => 'Purpose/Context' # Custom field for intended use
       }
     end
 
@@ -198,39 +198,39 @@ module ResourceSpace
     def create_web_asset_fields(resource_types: [1])
       fields_to_create = [
         {
-          name: "Web Asset Type",
-          type: "dropdown",
-          options: ["Image", "CSS", "JavaScript", "Font", "Icon", "Video", "Audio"]
+          name: 'Web Asset Type',
+          type: 'dropdown',
+          options: %w[Image CSS JavaScript Font Icon Video Audio]
         },
         {
-          name: "Usage Rights",
-          type: "dropdown",
-          options: ["Public Domain", "Creative Commons", "Licensed", "Proprietary"]
+          name: 'Usage Rights',
+          type: 'dropdown',
+          options: ['Public Domain', 'Creative Commons', 'Licensed', 'Proprietary']
         },
         {
-          name: "Dimensions",
-          type: "text",
-          description: "Width x Height (e.g., 1920x1080)"
+          name: 'Dimensions',
+          type: 'text',
+          description: 'Width x Height (e.g., 1920x1080)'
         },
         {
-          name: "File Size",
-          type: "text",
-          description: "File size in bytes/KB/MB"
+          name: 'File Size',
+          type: 'text',
+          description: 'File size in bytes/KB/MB'
         },
         {
-          name: "Compression",
-          type: "dropdown",
-          options: ["None", "Lossless", "Lossy", "Optimized"]
+          name: 'Compression',
+          type: 'dropdown',
+          options: %w[None Lossless Lossy Optimized]
         },
         {
-          name: "Color Profile",
-          type: "dropdown",
-          options: ["sRGB", "Adobe RGB", "ProPhoto RGB", "CMYK", "Grayscale"]
+          name: 'Color Profile',
+          type: 'dropdown',
+          options: ['sRGB', 'Adobe RGB', 'ProPhoto RGB', 'CMYK', 'Grayscale']
         },
         {
-          name: "Purpose/Context",
-          type: "text",
-          description: "Intended use or context for this asset"
+          name: 'Purpose/Context',
+          type: 'text',
+          description: 'Intended use or context for this asset'
         }
       ]
 
@@ -260,27 +260,27 @@ module ResourceSpace
     def update_web_asset_metadata(resource_id, metadata = {})
       updates = []
 
-      schema = web_asset_schema
+      web_asset_schema
 
       metadata.each do |field_name, value|
         field_id = case field_name.to_s.downcase
-                   when "title", "name"
+                   when 'title', 'name'
                      8
-                   when "keywords", "tags"
+                   when 'keywords', 'tags'
                      12
-                   when "asset_type", "type"
+                   when 'asset_type', 'type'
                      51
-                   when "usage_rights", "rights", "license"
+                   when 'usage_rights', 'rights', 'license'
                      52
-                   when "dimensions", "size"
+                   when 'dimensions', 'size'
                      53
-                   when "file_size"
+                   when 'file_size'
                      54
-                   when "compression"
+                   when 'compression'
                      55
-                   when "color_profile", "color"
+                   when 'color_profile', 'color'
                      56
-                   when "purpose", "context", "description"
+                   when 'purpose', 'context', 'description'
                      57
                    else
                      field_name.to_i if field_name.to_s.match?(/^\d+$/)

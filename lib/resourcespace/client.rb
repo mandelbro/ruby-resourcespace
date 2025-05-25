@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "faraday"
-require "faraday/multipart"
-require "json"
-require "digest"
-require "uri"
+require 'faraday'
+require 'faraday/multipart'
+require 'json'
+require 'digest'
+require 'uri'
 
 module ResourceSpace
   # Main client class for interacting with ResourceSpace API
@@ -94,7 +94,7 @@ module ResourceSpace
                    end
 
       params = params.merge(filedata: file_param)
-      request(:post, "upload_file", params, multipart: true)
+      request(:post, 'upload_file', params, multipart: true)
     end
 
     # Download a file from ResourceSpace
@@ -117,7 +117,7 @@ module ResourceSpace
     #
     # @return [Hash] system status information
     def test_connection
-      get("get_system_status")
+      get('get_system_status')
     end
 
     private
@@ -146,13 +146,11 @@ module ResourceSpace
 
       # Make the request
       response = if method == :get
-                   connection.get("", request_params)
+                   connection.get('', request_params)
+                 elsif multipart
+                   connection.post('', request_params)
                  else
-                   if multipart
-                     connection.post("", request_params)
-                   else
-                     connection.post("", URI.encode_www_form(request_params))
-                   end
+                   connection.post('', URI.encode_www_form(request_params))
                  end
 
       handle_response(response)
@@ -179,7 +177,7 @@ module ResourceSpace
         conn.options.timeout = config.timeout
 
         # Set headers
-        conn.headers["User-Agent"] = config.user_agent
+        conn.headers['User-Agent'] = config.user_agent
         config.default_headers.each { |key, value| conn.headers[key] = value }
 
         # Add response middleware
@@ -211,7 +209,7 @@ module ResourceSpace
       if response.body && !response.body.empty?
         begin
           parsed_body = JSON.parse(response.body)
-          message = parsed_body["error"] || parsed_body["message"] || message
+          message = parsed_body['error'] || parsed_body['message'] || message
         rescue JSON::ParserError
           message = response.body.length > 200 ? "#{response.body[0..200]}..." : response.body
         end
@@ -238,8 +236,8 @@ module ResourceSpace
     # @param file_path [String] file path
     # @return [String] MIME type
     def mime_type_for_file(file_path)
-      require "mime/types"
-      MIME::Types.type_for(file_path).first&.content_type || "application/octet-stream"
+      require 'mime/types'
+      MIME::Types.type_for(file_path).first&.content_type || 'application/octet-stream'
     end
   end
 end

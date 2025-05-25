@@ -51,7 +51,7 @@ module ResourceSpace
       @retries = 3
       @user_agent = "ResourceSpace Ruby Client #{ResourceSpace::VERSION}"
       @verify_ssl = true
-      @auth_mode = "userkey"
+      @auth_mode = 'userkey'
       @default_headers = {}
       @debug = false
       @logger = nil
@@ -64,13 +64,14 @@ module ResourceSpace
     def validate!
       errors = []
 
-      errors << "URL is required" if url.nil? || url.empty?
-      errors << "URL must end with /api/" if url && !url.end_with?("/api/")
-      errors << "User is required" if user.nil? || user.empty?
-      errors << "Private key is required" if private_key.nil? || private_key.empty?
-      errors << "Timeout must be positive" if timeout && timeout <= 0
-      errors << "Retries must be non-negative" if retries && retries < 0
-      errors << "Auth mode must be userkey, sessionkey, or native" unless %w[userkey sessionkey native].include?(auth_mode)
+      errors << 'URL is required' if url.nil? || url.empty?
+      errors << 'URL must end with /api/' if url && !url.end_with?('/api/')
+      errors << 'User is required' if user.nil? || user.empty?
+      errors << 'Private key is required' if private_key.nil? || private_key.empty?
+      errors << 'Timeout must be positive' if timeout && timeout <= 0
+      errors << 'Retries must be non-negative' if retries&.negative?
+      errors << 'Auth mode must be userkey, sessionkey, or native' unless %w[userkey sessionkey
+                                                                             native].include?(auth_mode)
 
       raise ConfigurationError, "Configuration errors: #{errors.join(', ')}" unless errors.empty?
 
@@ -94,7 +95,7 @@ module ResourceSpace
       {
         url: url,
         user: user,
-        private_key: private_key ? "[REDACTED]" : nil,
+        private_key: private_key ? '[REDACTED]' : nil,
         timeout: timeout,
         retries: retries,
         user_agent: user_agent,

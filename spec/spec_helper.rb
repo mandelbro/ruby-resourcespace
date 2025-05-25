@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'simplecov'
 SimpleCov.start 'rails' do
   add_filter '/spec/'
@@ -28,33 +30,37 @@ end
 
 # frozen_string_literal: true
 
-require "bundler/setup"
-require "resourcespace"
-require "webmock/rspec"
-require "vcr"
+require 'bundler/setup'
+require 'resourcespace'
+require 'webmock/rspec'
+require 'vcr'
 
 # Configure WebMock
 WebMock.disable_net_connect!(allow_localhost: true)
 
 # Configure VCR for recording HTTP interactions
 VCR.configure do |config|
-  config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
+  config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   config.hook_into :webmock
   config.configure_rspec_metadata!
   config.default_cassette_options = {
     record: :new_episodes,
     allow_playback_repeats: true,
-    match_requests_on: [:method, :uri, :body]
+    match_requests_on: %i[method uri body]
   }
 
   # Filter out sensitive data
-  config.filter_sensitive_data('<PRIVATE_KEY>') { |interaction| interaction.request.body.match(/sign=([^&]+)/)[1] if interaction.request.body.include?('sign=') }
-  config.filter_sensitive_data('<USER>') { |interaction| interaction.request.body.match(/user=([^&]+)/)[1] if interaction.request.body.include?('user=') }
+  config.filter_sensitive_data('<PRIVATE_KEY>') do |interaction|
+    interaction.request.body.match(/sign=([^&]+)/)[1] if interaction.request.body.include?('sign=')
+  end
+  config.filter_sensitive_data('<USER>') do |interaction|
+    interaction.request.body.match(/user=([^&]+)/)[1] if interaction.request.body.include?('user=')
+  end
 end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = ".rspec_status"
+  config.example_status_persistence_file_path = '.rspec_status'
 
   # Disable RSpec exposing methods globally on Module and main
   config.disable_monkey_patching!
@@ -82,9 +88,9 @@ end
 module TestHelpers
   def valid_config
     {
-      url: "https://demo.resourcespace.com/api/",
-      user: "test_user",
-      private_key: "test_private_key_12345"
+      url: 'https://demo.resourcespace.com/api/',
+      user: 'test_user',
+      private_key: 'test_private_key_12345'
     }
   end
 
@@ -95,7 +101,7 @@ module TestHelpers
 
   def stub_api_request(method, function, params = {}, response = {})
     request_params = {
-      user: "test_user",
+      user: 'test_user',
       function: function
     }.merge(params)
 
@@ -105,10 +111,10 @@ module TestHelpers
 
     # Add signature and authmode after signature generation (like the client does)
     request_params[:sign] = signature
-    request_params[:authmode] = "userkey"
+    request_params[:authmode] = 'userkey'
 
     if method == :get
-      stub_request(:get, "https://demo.resourcespace.com/api/")
+      stub_request(:get, 'https://demo.resourcespace.com/api/')
         .with(query: request_params)
         .to_return(
           status: 200,
@@ -116,7 +122,7 @@ module TestHelpers
           headers: { 'Content-Type' => 'application/json' }
         )
     else
-      stub_request(:post, "https://demo.resourcespace.com/api/")
+      stub_request(:post, 'https://demo.resourcespace.com/api/')
         .with(body: URI.encode_www_form(request_params))
         .to_return(
           status: 200,
@@ -128,7 +134,7 @@ module TestHelpers
 
   def stub_error_response(method, function, status_code, error_message = nil, params = {})
     request_params = {
-      user: "test_user",
+      user: 'test_user',
       function: function
     }.merge(params)
 
@@ -138,16 +144,16 @@ module TestHelpers
 
     # Add signature and authmode after signature generation
     request_params[:sign] = signature
-    request_params[:authmode] = "userkey"
+    request_params[:authmode] = 'userkey'
 
-    error_body = error_message ? { error: error_message }.to_json : ""
+    error_body = error_message ? { error: error_message }.to_json : ''
 
     if method == :get
-      stub_request(:get, "https://demo.resourcespace.com/api/")
+      stub_request(:get, 'https://demo.resourcespace.com/api/')
         .with(query: request_params)
         .to_return(status: status_code, body: error_body)
     else
-      stub_request(:post, "https://demo.resourcespace.com/api/")
+      stub_request(:post, 'https://demo.resourcespace.com/api/')
         .with(body: URI.encode_www_form(request_params))
         .to_return(status: status_code, body: error_body)
     end

@@ -33,7 +33,7 @@ module ResourceSpace
       params = {}
       params[:param1] = user if user
 
-      client.get("get_user_collections", params)
+      client.get('get_user_collections', params)
     end
 
     # Create a new collection
@@ -45,11 +45,11 @@ module ResourceSpace
     def create_collection(name, public: false, allow_changes: true)
       params = {
         param1: name,
-        param2: public ? "1" : "0"
+        param2: public ? '1' : '0'
       }
-      params[:param3] = allow_changes ? "1" : "0"
+      params[:param3] = allow_changes ? '1' : '0'
 
-      client.post("create_collection", params)
+      client.post('create_collection', params)
     end
 
     # Delete a collection
@@ -57,7 +57,7 @@ module ResourceSpace
     # @param collection_id [Integer] collection ID
     # @return [Hash] response
     def delete_collection(collection_id)
-      client.post("delete_collection", { param1: collection_id.to_s })
+      client.post('delete_collection', { param1: collection_id.to_s })
     end
 
     # Get collection details
@@ -65,7 +65,7 @@ module ResourceSpace
     # @param collection_id [Integer] collection ID
     # @return [Hash] collection details
     def get_collection(collection_id)
-      client.get("get_collection", { param1: collection_id.to_s })
+      client.get('get_collection', { param1: collection_id.to_s })
     end
 
     # Save collection (update collection details)
@@ -78,10 +78,10 @@ module ResourceSpace
     def save_collection(collection_id, name: nil, public: nil, allow_changes: nil)
       params = { param1: collection_id.to_s }
       params[:param2] = name if name
-      params[:param3] = public ? "1" : "0" unless public.nil?
-      params[:param4] = allow_changes ? "1" : "0" unless allow_changes.nil?
+      params[:param3] = public ? '1' : '0' unless public.nil?
+      params[:param4] = allow_changes ? '1' : '0' unless allow_changes.nil?
 
-      client.post("save_collection", params)
+      client.post('save_collection', params)
     end
 
     # Add a resource to a collection
@@ -90,10 +90,10 @@ module ResourceSpace
     # @param collection_id [Integer] collection ID
     # @return [Hash] response
     def add_resource_to_collection(resource_id, collection_id)
-      client.post("add_resource_to_collection", {
-        param1: resource_id.to_s,
-        param2: collection_id.to_s
-      })
+      client.post('add_resource_to_collection', {
+                    param1: resource_id.to_s,
+                    param2: collection_id.to_s
+                  })
     end
 
     # Remove a resource from a collection
@@ -102,10 +102,10 @@ module ResourceSpace
     # @param collection_id [Integer] collection ID
     # @return [Hash] response
     def remove_resource_from_collection(resource_id, collection_id)
-      client.post("remove_resource_from_collection", {
-        param1: resource_id.to_s,
-        param2: collection_id.to_s
-      })
+      client.post('remove_resource_from_collection', {
+                    param1: resource_id.to_s,
+                    param2: collection_id.to_s
+                  })
     end
 
     # Show or hide a collection
@@ -114,10 +114,10 @@ module ResourceSpace
     # @param show [Boolean] true to show, false to hide
     # @return [Hash] response
     def show_hide_collection(collection_id, show: true)
-      client.post("show_hide_collection", {
-        param1: collection_id.to_s,
-        param2: show ? "1" : "0"
-      })
+      client.post('show_hide_collection', {
+                    param1: collection_id.to_s,
+                    param2: show ? '1' : '0'
+                  })
     end
 
     # Send collection to admin
@@ -125,11 +125,11 @@ module ResourceSpace
     # @param collection_id [Integer] collection ID
     # @param message [String] message to admin
     # @return [Hash] response
-    def send_collection_to_admin(collection_id, message = "")
-      client.post("send_collection_to_admin", {
-        param1: collection_id.to_s,
-        param2: message
-      })
+    def send_collection_to_admin(collection_id, message = '')
+      client.post('send_collection_to_admin', {
+                    param1: collection_id.to_s,
+                    param2: message
+                  })
     end
 
     # Search public collections
@@ -137,14 +137,14 @@ module ResourceSpace
     # @param search_term [String] search term
     # @return [Array] matching public collections
     def search_public_collections(search_term)
-      client.get("search_public_collections", { param1: search_term })
+      client.get('search_public_collections', { param1: search_term })
     end
 
     # Get featured collections
     #
     # @return [Array] featured collections
     def get_featured_collections
-      client.get("get_featured_collections")
+      client.get('get_featured_collections')
     end
 
     # Delete all resources in a collection
@@ -152,7 +152,7 @@ module ResourceSpace
     # @param collection_id [Integer] collection ID
     # @return [Hash] response
     def delete_resources_in_collection(collection_id)
-      client.post("delete_resources_in_collection", { param1: collection_id.to_s })
+      client.post('delete_resources_in_collection', { param1: collection_id.to_s })
     end
 
     # Add multiple resources to a collection
@@ -198,12 +198,10 @@ module ResourceSpace
       # Filter collections that likely contain web assets based on name
       web_asset_keywords = %w[web asset css js javascript image icon font stylesheet]
 
-      if asset_type
-        web_asset_keywords << asset_type.downcase
-      end
+      web_asset_keywords << asset_type.downcase if asset_type
 
       collections.select do |collection|
-        name = collection["name"]&.downcase || ""
+        name = collection['name']&.downcase || ''
         web_asset_keywords.any? { |keyword| name.include?(keyword) }
       end
     end

@@ -39,8 +39,8 @@ module ResourceSpace
 
       params[:param2] = collection.to_s if collection
 
-      response = client.post("create_resource", params)
-      resource_id = response.is_a?(Hash) ? response["ref"] || response["id"] : response
+      response = client.post('create_resource', params)
+      resource_id = response.is_a?(Hash) ? response['ref'] || response['id'] : response
 
       # Set resource name if provided
       if name && resource_id
@@ -48,9 +48,11 @@ module ResourceSpace
       end
 
       # Set additional metadata if provided
-      metadata.each do |field, value|
-        update_field(resource_id, field, value)
-      end if metadata.any?
+      if metadata.any?
+        metadata.each do |field, value|
+          update_field(resource_id, field, value)
+        end
+      end
 
       get_resource_data(resource_id)
     end
@@ -64,7 +66,7 @@ module ResourceSpace
     def upload_file(file, caption: nil, no_exif: false)
       params = {}
       params[:param1] = caption if caption
-      params[:param2] = "1" if no_exif
+      params[:param2] = '1' if no_exif
 
       client.upload_file(file, params)
     end
@@ -74,7 +76,7 @@ module ResourceSpace
     # @param resource_id [Integer] resource ID
     # @return [Hash] resource data
     def get_resource_data(resource_id)
-      client.get("get_resource_data", { param1: resource_id.to_s })
+      client.get('get_resource_data', { param1: resource_id.to_s })
     end
 
     # Get resource field data
@@ -86,7 +88,7 @@ module ResourceSpace
       params = { param1: resource_id.to_s }
       params[:param2] = field_id.to_s if field_id
 
-      client.get("get_resource_field_data", params)
+      client.get('get_resource_field_data', params)
     end
 
     # Update a resource field
@@ -104,7 +106,7 @@ module ResourceSpace
       }
       params[:param4] = node_values.to_s if node_values
 
-      client.post("update_field", params)
+      client.post('update_field', params)
     end
 
     # Delete a resource
@@ -112,7 +114,7 @@ module ResourceSpace
     # @param resource_id [Integer] resource ID
     # @return [Hash] response
     def delete_resource(resource_id)
-      client.post("delete_resource", { param1: resource_id.to_s })
+      client.post('delete_resource', { param1: resource_id.to_s })
     end
 
     # Copy a resource
@@ -124,7 +126,7 @@ module ResourceSpace
       params = { param1: resource_id.to_s }
       params[:param2] = resource_type.to_s if resource_type
 
-      client.post("copy_resource", params)
+      client.post('copy_resource', params)
     end
 
     # Get resource download path
@@ -134,7 +136,7 @@ module ResourceSpace
     # @param page [Integer] page number for multi-page documents
     # @param ext [String] file extension override
     # @return [String] download path
-    def get_resource_path(resource_id, size: "", page: 1, ext: "")
+    def get_resource_path(resource_id, size: '', page: 1, ext: '')
       params = {
         param1: resource_id.to_s,
         param2: size.to_s,
@@ -142,8 +144,8 @@ module ResourceSpace
       }
       params[:param4] = ext if ext && !ext.empty?
 
-      response = client.get("get_resource_path", params)
-      response.is_a?(String) ? response : response["path"]
+      response = client.get('get_resource_path', params)
+      response.is_a?(String) ? response : response['path']
     end
 
     # Get alternative files for a resource
@@ -151,7 +153,7 @@ module ResourceSpace
     # @param resource_id [Integer] resource ID
     # @return [Array] alternative files data
     def get_alternative_files(resource_id)
-      client.get("get_alternative_files", { param1: resource_id.to_s })
+      client.get('get_alternative_files', { param1: resource_id.to_s })
     end
 
     # Add an alternative file to a resource
@@ -166,7 +168,7 @@ module ResourceSpace
       params[:param2] = name if name
       params[:param3] = description if description
 
-      client.upload_file(file, params.merge(function: "add_alternative_file"))
+      client.upload_file(file, params.merge(function: 'add_alternative_file'))
     end
 
     # Delete an alternative file
@@ -175,17 +177,17 @@ module ResourceSpace
     # @param alt_file_id [Integer] alternative file ID
     # @return [Hash] response
     def delete_alternative_file(resource_id, alt_file_id)
-      client.post("delete_alternative_file", {
-        param1: resource_id.to_s,
-        param2: alt_file_id.to_s
-      })
+      client.post('delete_alternative_file', {
+                    param1: resource_id.to_s,
+                    param2: alt_file_id.to_s
+                  })
     end
 
     # Get resource types
     #
     # @return [Array] resource types
     def get_resource_types
-      client.get("get_resource_types")
+      client.get('get_resource_types')
     end
 
     # Update resource type
@@ -194,10 +196,10 @@ module ResourceSpace
     # @param resource_type [Integer] new resource type ID
     # @return [Hash] response
     def update_resource_type(resource_id, resource_type)
-      client.post("update_resource_type", {
-        param1: resource_id.to_s,
-        param2: resource_type.to_s
-      })
+      client.post('update_resource_type', {
+                    param1: resource_id.to_s,
+                    param2: resource_type.to_s
+                  })
     end
 
     # Get resource log
@@ -206,10 +208,10 @@ module ResourceSpace
     # @param entries [Integer] number of entries to return
     # @return [Array] log entries
     def get_resource_log(resource_id, entries: 50)
-      client.get("get_resource_log", {
-        param1: resource_id.to_s,
-        param2: entries.to_s
-      })
+      client.get('get_resource_log', {
+                   param1: resource_id.to_s,
+                   param2: entries.to_s
+                 })
     end
 
     # Get all image sizes for a resource
@@ -217,7 +219,7 @@ module ResourceSpace
     # @param resource_id [Integer] resource ID
     # @return [Hash] image sizes data
     def get_resource_all_image_sizes(resource_id)
-      client.get("get_resource_all_image_sizes", { param1: resource_id.to_s })
+      client.get('get_resource_all_image_sizes', { param1: resource_id.to_s })
     end
 
     # Replace resource file
@@ -228,9 +230,9 @@ module ResourceSpace
     # @return [Hash] response
     def replace_resource_file(resource_id, file, no_exif: false)
       params = { param1: resource_id.to_s }
-      params[:param2] = "1" if no_exif
+      params[:param2] = '1' if no_exif
 
-      client.upload_file(file, params.merge(function: "replace_resource_file"))
+      client.upload_file(file, params.merge(function: 'replace_resource_file'))
     end
 
     # Upload file by URL
@@ -246,9 +248,9 @@ module ResourceSpace
         param2: url
       }
       params[:param3] = save_as if save_as
-      params[:param4] = "1" if no_exif
+      params[:param4] = '1' if no_exif
 
-      client.post("upload_file_by_url", params)
+      client.post('upload_file_by_url', params)
     end
 
     # Check if user has edit access to resource
@@ -256,8 +258,8 @@ module ResourceSpace
     # @param resource_id [Integer] resource ID
     # @return [Boolean] true if user has edit access
     def edit_access?(resource_id)
-      response = client.get("get_edit_access", { param1: resource_id.to_s })
-      response == true || response == "true" || response == 1 || response == "1"
+      response = client.get('get_edit_access', { param1: resource_id.to_s })
+      [true, 'true', 1, '1'].include?(response)
     end
 
     # Get resource access level
@@ -265,7 +267,7 @@ module ResourceSpace
     # @param resource_id [Integer] resource ID
     # @return [Integer] access level
     def get_resource_access(resource_id)
-      response = client.get("get_resource_access", { param1: resource_id.to_s })
+      response = client.get('get_resource_access', { param1: resource_id.to_s })
       response.to_i
     end
 
@@ -275,7 +277,7 @@ module ResourceSpace
     # @param file_path [String] local file path to save to
     # @param size [String] image size
     # @return [Boolean] true if successful
-    def download_resource(resource_id, file_path, size: "")
+    def download_resource(resource_id, file_path, size: '')
       download_path = get_resource_path(resource_id, size: size)
       download_url = "#{client.config.url.gsub('/api/', '')}#{download_path}"
 

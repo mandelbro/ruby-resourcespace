@@ -46,7 +46,7 @@ module ResourceSpace
     # @return [Hash] search results
     def do_search(search_term, options = {})
       params = build_search_params(search_term, options)
-      client.get("do_search", params)
+      client.get('do_search', params)
     end
 
     # Search and get previews in one call
@@ -63,7 +63,7 @@ module ResourceSpace
       params = build_search_params(search_term, options)
       params[:param6] = options[:getsizes] if options[:getsizes]
 
-      client.get("search_get_previews", params)
+      client.get('search_get_previews', params)
     end
 
     # Search for web assets (images, CSS, JS, fonts)
@@ -75,22 +75,22 @@ module ResourceSpace
       search_terms = []
 
       case asset_type&.downcase
-      when "image", "images"
-        search_terms << "extension:jpg OR extension:jpeg OR extension:png OR extension:gif OR extension:svg OR extension:webp"
-      when "css", "stylesheet", "stylesheets"
-        search_terms << "extension:css"
-      when "javascript", "js"
-        search_terms << "extension:js"
-      when "font", "fonts"
-        search_terms << "extension:woff OR extension:woff2 OR extension:ttf OR extension:otf OR extension:eot"
-      when "icon", "icons"
-        search_terms << "extension:ico OR extension:svg"
+      when 'image', 'images'
+        search_terms << 'extension:jpg OR extension:jpeg OR extension:png OR extension:gif OR extension:svg OR extension:webp'
+      when 'css', 'stylesheet', 'stylesheets'
+        search_terms << 'extension:css'
+      when 'javascript', 'js'
+        search_terms << 'extension:js'
+      when 'font', 'fonts'
+        search_terms << 'extension:woff OR extension:woff2 OR extension:ttf OR extension:otf OR extension:eot'
+      when 'icon', 'icons'
+        search_terms << 'extension:ico OR extension:svg'
       else
         # Search for all common web asset types
-        search_terms << "extension:jpg OR extension:jpeg OR extension:png OR extension:gif OR extension:svg OR extension:webp OR extension:css OR extension:js OR extension:woff OR extension:woff2 OR extension:ico"
+        search_terms << 'extension:jpg OR extension:jpeg OR extension:png OR extension:gif OR extension:svg OR extension:webp OR extension:css OR extension:js OR extension:woff OR extension:woff2 OR extension:ico'
       end
 
-      search_term = search_terms.join(" OR ")
+      search_term = search_terms.join(' OR ')
       search_term += " #{options.delete(:query)}" if options[:query]
 
       do_search(search_term, options)
@@ -103,7 +103,7 @@ module ResourceSpace
     # @return [Hash] search results
     def search_by_extension(extensions, options = {})
       extensions = Array(extensions).map(&:to_s)
-      search_term = extensions.map { |ext| "extension:#{ext.gsub(/^\./, '')}" }.join(" OR ")
+      search_term = extensions.map { |ext| "extension:#{ext.gsub(/^\./, '')}" }.join(' OR ')
 
       do_search(search_term, options)
     end
@@ -140,7 +140,7 @@ module ResourceSpace
     # @param options [Hash] search options
     # @return [Hash] search results
     def search_by_ids(resource_ids, options = {})
-      ids = Array(resource_ids).join(":")
+      ids = Array(resource_ids).join(':')
       search_term = "!list#{ids}"
       do_search(search_term, options)
     end
@@ -204,7 +204,7 @@ module ResourceSpace
       search_parts << "user:#{criteria[:user]}" if criteria[:user]
 
       if criteria[:extensions]
-        ext_search = Array(criteria[:extensions]).map { |ext| "extension:#{ext.gsub(/^\./, '')}" }.join(" OR ")
+        ext_search = Array(criteria[:extensions]).map { |ext| "extension:#{ext.gsub(/^\./, '')}" }.join(' OR ')
         search_parts << "(#{ext_search})"
       end
 
@@ -214,7 +214,7 @@ module ResourceSpace
         search_parts << date_search
       end
 
-      search_term = search_parts.join(" AND ")
+      search_term = search_parts.join(' AND ')
       search_term = criteria[:query] if search_term.empty? && criteria[:query]
 
       do_search(search_term, options)
@@ -247,10 +247,8 @@ module ResourceSpace
     # @return [String] formatted date string
     def format_date(date)
       case date
-      when Date
-        date.strftime("%Y-%m-%d")
-      when Time
-        date.strftime("%Y-%m-%d")
+      when Date, Time
+        date.strftime('%Y-%m-%d')
       else
         date.to_s
       end
